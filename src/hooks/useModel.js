@@ -9,15 +9,18 @@ const FILES = {
   tiers: 'risk_tiers.json',
   performance: 'performance.json',
   predictors: 'predictors.json',
+  shap: 'shap.json',
+  population: 'population.json',
 };
 
 /**
  * Loads the exported model data (final_analysis/scripts/17_export_webapp.py) on mount.
- * Returns { model, spec, schema, tiers, performance, predictors, loading, error }.
+ * Returns { model, spec, schema, tiers, performance, predictors, shap, population, loading, error }.
  */
 export function useModel() {
   const [data, setData] = useState({
-    model: null, spec: null, schema: null, tiers: null, performance: null, predictors: null, loading: true, error: null,
+    model: null, spec: null, schema: null, tiers: null, performance: null, predictors: null, shap: null, population: null,
+    loading: true, error: null,
   });
 
   useEffect(() => {

@@ -1,65 +1,19 @@
-import { useContext, useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useContext, useMemo } from 'react';
+import { NavLink } from 'react-router-dom';
 import { AlertTriangle, Info } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, ReferenceLine } from 'recharts';
-import { DataContext } from '../context';
+import { DataContext, ProfileContext } from '../context';
 import { predictRisk, tierFor } from '../lib/risk';
 import { contributions } from '../lib/contributions';
 import { applyConsistency, checkInput } from '../lib/validation';
-import { EXAMPLES } from '../lib/examples';
+import { initialInput } from '../lib/profile';
 import { num, pct } from '../lib/format';
 import RiskBadge from '../components/RiskBadge';
-
-function initialInput(schema, example) {
-  const defaults = Object.fromEntries(schema.fields.map((f) => [f.name, f.default]));
-  return applyConsistency({ ...defaults, ...(EXAMPLES[example] || {}) });
-}
-
-function Field({ field, value, onChange, locked, parous }) {
-  const id = `f-${field.name}`;
-  const label = field.unit ? `${field.label} (${field.unit})` : field.label;
-  if (field.kind === 'number') {
-    return (
-      <div className="form-group">
-        <label htmlFor={id}>{label}</label>
-        <input
-          id={id}
-          className="form-input"
-          type="number"
-          step={field.step}
-          min={field.hard_min}
-          max={field.hard_max}
-          value={value ?? ''}
-          placeholder="Unknown"
-          onChange={(e) => onChange(field.name, e.target.value === '' ? null : Number(e.target.value))}
-        />
-      </div>
-    );
-  }
-  const levels = field.name === 'interpregnancy_cat' && parous
-    ? field.levels.filter((l) => l.value !== 'Nulliparous')
-    : field.levels;
-  return (
-    <div className="form-group">
-      <label htmlFor={id}>{label}</label>
-      <select
-        id={id}
-        className="form-input"
-        value={value ?? ''}
-        disabled={locked}
-        onChange={(e) => onChange(field.name, e.target.value === '' ? null : e.target.value)}
-      >
-        {!locked && <option value="">Unknown</option>}
-        {levels.map((l) => <option key={l.value} value={l.value}>{l.label}</option>)}
-      </select>
-    </div>
-  );
-}
+import ProfileField from '../components/ProfileField';
 
 export default function RiskCalculator() {
   const { model, spec, schema, tiers, performance } = useContext(DataContext);
-  const [params] = useSearchParams();
-  const [input, setInput] = useState(() => initialInput(schema, params.get('example')));
+  const { profile: input, setProfile: setInput } = useContext(ProfileContext);
   const bundle = useMemo(() => ({ model, spec }), [model, spec]);
   const check = useMemo(() => checkInput(input, schema), [input, schema]);
   const result = useMemo(() => (check.errors.length ? null : predictRisk(input, bundle)), [check, input, bundle]);
@@ -89,7 +43,7 @@ export default function RiskCalculator() {
               <legend>{g}</legend>
               <div className="fields-grid">
                 {schema.fields.filter((f) => f.group === g).map((f) => (
-                  <Field
+                  <ProfileField
                     key={f.name}
                     field={f}
                     value={input[f.name]}
@@ -125,6 +79,10 @@ export default function RiskCalculator() {
                 ({tier.range}) developed pre-eclampsia. Cohort average: {pct(tiers.cohort.incidence)}.
               </p>
               <p className="result-action">This tool does not recommend management; follow local antenatal protocols.</p>
+              <p className="page-links">
+                <NavLink to="/what-if">Try changes in the What-If Simulator</NavLink>
+                <NavLink to="/shap">See the SHAP explanation</NavLink>
+              </p>
               {result.imputed.length > 0 && (
                 <p className="card-note">
                   {result.imputed.length} value{result.imputed.length > 1 ? 's were' : ' was'} unknown and filled in with

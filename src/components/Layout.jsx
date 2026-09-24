@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import { Calculator, BarChart3, Layers, Info, Menu, X, Activity } from 'lucide-react';
+import { Calculator, BarChart3, Layers, Info, Menu, X, Activity, SlidersHorizontal, ScanSearch, Users } from 'lucide-react';
 
 const NAV_ITEMS = [
   { to: '/', label: 'Risk Calculator', icon: Calculator },
+  { to: '/what-if', label: 'What-If Simulator', icon: SlidersHorizontal },
+  { to: '/shap', label: 'SHAP Explorer', icon: ScanSearch },
+  { to: '/population', label: 'Population', icon: Users },
   { to: '/performance', label: 'Model Performance', icon: BarChart3 },
   { to: '/predictors', label: 'Predictors', icon: Layers },
   { to: '/about', label: 'About', icon: Info },
@@ -69,7 +72,7 @@ export default function Layout() {
 
         <div className="sidebar-footer">
           <p>Lagos, Nigeria</p>
-          <p className="sidebar-version">v2.0 &middot; Browser-only</p>
+          <p className="sidebar-version">v2.1 &middot; Browser-only</p>
         </div>
       </nav>
 

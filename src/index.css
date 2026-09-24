@@ -1176,3 +1176,21 @@ code {
 .data-table th, .data-table td { padding: 0.4rem 0.5rem; border-bottom: 1px solid #e8edf1; text-align: left; }
 .row-selected { font-weight: 600; background: #eef6fb; }
 .nomogram-img { width: 100%; max-width: 760px; height: auto; display: block; margin: 0.5rem 0; }
+
+/* --- v2.1 pages: What-If Simulator, SHAP Explorer, Population --- */
+.compare-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 1rem; margin: 1rem 0 0.75rem; }
+.compare-card { background: var(--bg-card); border: 1px solid var(--border); border-top: 4px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; text-align: center; box-shadow: var(--shadow-sm); min-width: 0; }
+.compare-card .result-risk { font-size: 2.4rem; }
+.change-card .delta-value { font-size: 2rem; font-weight: 700; color: var(--primary); margin: 0.35rem 0; }
+.model-note { background: #fff8ee; border-left: 4px solid var(--orange); border-radius: var(--radius-sm); padding: 0.6rem 0.9rem; margin: 0 0 1.25rem; font-size: 0.9rem; }
+.slider-row { display: flex; gap: 0.5rem; align-items: center; }
+.slider-row input[type="range"] { flex: 1; min-width: 0; accent-color: var(--primary-light); }
+.slider-row .form-input { width: 5.5rem; flex: none; }
+.field-changed label { color: var(--primary); font-weight: 700; }
+.field-changed .form-input { border-color: var(--primary-light); background: #eef6fb; }
+.inline-label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.3rem; }
+.inline-select { max-width: 340px; margin-bottom: 0.75rem; }
+.page-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem 1.25rem; margin-top: 0.75rem; font-size: 0.88rem; }
+.page-links a { color: var(--primary-light); font-weight: 600; }
+.page-shap .chart-card, .page-population .table-wrap { margin-bottom: 1.25rem; }
+.page-shap .stats-strip { margin-bottom: 1.25rem; }
